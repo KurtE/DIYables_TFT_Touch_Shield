@@ -49,7 +49,7 @@ Both classes share the same public API, so you only need to change the class nam
 
 Product Link
 ----------------------------
-* [TFT LCD Display](https://diyables.io/products/3.5-tft-lcd-color-touch-screen-shield-for-arduino-uno-mega-320x480-resolution-ili9488-driver-parallel-8-bit-interface-28pin-module-with-touch)
+* [TFT LCD Display](https://diyables.io/tft-touch-shield)
 * [Amazon Link](https://www.amazon.com/dp/B0DQ3NQ3LW)
 
 

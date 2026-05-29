@@ -45,6 +45,7 @@ DIYables_TFT_RM68140_Shield TFT_display;
 // DIYables_TFT_HX8357D_Shield  TFT_display;
 // For DIYables ESP32-S3 Uno-form factor (https://diyables.io/esp32-s3-uno), touch pins: XP=3, YP=1, XM=7, YM=14
 // DIYables_TFT_RM68140_Shield TFT_display(3, 1, 7, 14);
+// DIYables_TFT_HX8357D_Shield TFT_display(3, 1, 7, 14);
 
 // Minimum pressure to count as a valid touch. No upper limit —
 // the raw Z value varies widely with touch pressure and board type.
