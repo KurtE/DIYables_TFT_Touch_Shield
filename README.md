@@ -17,7 +17,7 @@ The DIYables TFT LCD Touch Display Shield has two hardware versions:
 
 | Feature                | Older Version              | New Version                     |
 |------------------------|----------------------------|---------------------------------|
-| Driver IC              | ILI9488                    | RM68140                         |
+| Driver IC              | ILI9488                    | RM68140 **or** HX8357D          |
 | Resolution             | 320 × 480                  | 320 × 480                       |
 | Touch Screen           | Resistive                  | Resistive                       |
 | Interface              | 8-bit Parallel             | 8-bit Parallel                  |
@@ -26,8 +26,24 @@ The DIYables TFT LCD Touch Display Shield has two hardware versions:
 | Arduino Library        | v1.0.0                     | v2.0.0+                         |
 
 * If you have the **older version (ILI9488)**, use library version **1.0.0**.
-* If you have the **new version (RM68140)**, update to library version **2.0.0** or later via the Arduino Library Manager.
+* If you have the **new version (RM68140 or HX8357D)**, update to library version **2.0.0** or later via the Arduino Library Manager.
 * Both versions use the same code structure and examples.
+
+### Choosing the Driver Class
+
+The new-version shield ships with one of two compatible driver ICs. Look at the label printed on the shield's package (or the IC marking) and select the matching class in your sketch:
+
+```cpp
+#include <DIYables_TFT_Touch_Shield.h>
+
+// For shields with the RM68140 driver IC:
+DIYables_TFT_RM68140_Shield TFT_display;
+
+// For shields with the HX8357D driver IC:
+// DIYables_TFT_HX8357D_Shield TFT_display;
+```
+
+Both classes share the same public API, so you only need to change the class name.
 
 
 
@@ -55,6 +71,7 @@ Available Examples
 * **TouchButton.ino**: Demonstrates how to create a touchable button and detect press/release events on the TFT touch screen.  
 * **TouchDraw.ino**: Lets you draw freehand lines on the screen by dragging your finger or stylus across the touch panel.  
 * **TurnOnOff.ino**: Demonstrates how to turn the TFT display on and off using the `turnOn()` and `turnOff()` functions.  
+* **ColligateTest.ino**: Comprehensive graphics benchmark that runs 14 drawing tests and prints per-test timing results to the Serial Monitor.  
 
 
 

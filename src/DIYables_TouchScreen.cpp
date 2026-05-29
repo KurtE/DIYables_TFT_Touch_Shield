@@ -13,7 +13,6 @@
 // analogReadResolution() calls.
 
 #include "Arduino.h"
-#include "pins_arduino.h"
 #include "DIYables_TouchScreen.h"
 
 // ---------------------------------------------------------------------------

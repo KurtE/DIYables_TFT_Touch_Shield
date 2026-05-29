@@ -14,8 +14,12 @@
 #define MAGENTA   DIYables_TFT::colorRGB(255, 0, 255)
 #define WHITE     DIYables_TFT::colorRGB(255, 255, 255)
 
+// NOTE: Choose the class that matches the driver IC printed on the shield's package/label:
+//   - RM68140 driver  -> use DIYables_TFT_RM68140_Shield
+//   - HX8357D driver  -> use DIYables_TFT_HX8357D_Shield
 // For Arduino Uno R3, Uno R4, Mega, Due, Giga, DIYables STEM V3/V4 (default touch pins: XP=6, YP=A1, XM=A2, YM=7)
 DIYables_TFT_RM68140_Shield TFT_display;
+// DIYables_TFT_HX8357D_Shield  TFT_display;
 // For DIYables ESP32-S3 Uno-form factor (https://diyables.io/esp32-s3-uno), touch pins: XP=3, YP=1, XM=7, YM=14
 // DIYables_TFT_RM68140_Shield TFT_display(3, 1, 7, 14);
 
