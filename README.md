@@ -82,6 +82,8 @@ Tutorials
 * [Arduino - TFT LCD Touch Screen Display](https://arduinogetstarted.com/tutorials/arduino-tft-lcd-touch-screen-display)
 * [Arduino UNO R4 - TFT LCD Touch Screen Display](https://newbiely.com/tutorials/arduino-uno-r4/arduino-uno-r4-tft-lcd-touch-screen-display)
 * [Arduino Mega - TFT LCD Touch Screen Display](https://newbiely.com/tutorials/arduino-mega/arduino-mega-tft-lcd-touch-screen-display)
+* [Arduino Giga R1 WiFi - TFT LCD Touch Screen Display](https://newbiely.com/tutorials/arduino-giga/arduino-giga-r1-wifi-tft-lcd-touch-screen-display)
+* [Arduino Due - TFT LCD Touch Screen Display](https://newbiely.com/tutorials/arduino-due/arduino-due-tft-lcd-touch-screen-display)
 
 
 
