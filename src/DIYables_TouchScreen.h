@@ -86,7 +86,7 @@ private:
   // XP/XM drive the X-axis; YP/YM drive the Y-axis.
   // The two analog-capable pins (typically YP and XM) are also used for
   // analogRead() to sense touch position and pressure.
-  uint8_t  _yp, _ym, _xm, _xp;
+  uint8_t   _xp, _yp, _xm, _ym;
   uint16_t _rxplate;
   int      _adc_max;  ///< (1 << bits) - 1, e.g. 1023 for 10-bit
   int      _adc_div;  ///< (1 << bits),     e.g. 1024 for 10-bit

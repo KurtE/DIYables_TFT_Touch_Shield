@@ -68,6 +68,11 @@ void DIYables_TFT_Touch_Shield_Base::writeBus(uint8_t val) {
 }
 
 void DIYables_TFT_Touch_Shield_Base::reset() {
+  // Added pinMode to output here of the reset pin and not part of the 
+  // SET_CONTROL_DIR_OUT, as if the pinMode call is part of that
+  // macro, the TouchScreen code, calling it will leave the display
+  // in a reset state.
+  pinMode(_rst, OUTPUT);
   #ifndef ARDUINO_API_USED
   if (!_useAPI) {
     PIN_LOW(RESET_PORT, RESET_PIN);
@@ -264,6 +269,7 @@ void DIYables_TFT_Touch_Shield_Base::writeData16(uint16_t data, uint32_t count) 
   #ifndef ARDUINO_API_USED
   if (!_useAPI) {
     PIN_HIGH(CD_PORT, CD_PIN);
+#ifndef DELAY_WR_STOBE
     if (hi == lo) {
       WRITE_8(hi);
       while (count >= 8) {
@@ -277,6 +283,7 @@ void DIYables_TFT_Touch_Shield_Base::writeData16(uint16_t data, uint32_t count) 
         WR_STROBE(); WR_STROBE();
       }
     } else {
+#endif      
       while (count >= 8) {
         WRITE_8(hi); WR_STROBE(); WRITE_8(lo); WR_STROBE();
         WRITE_8(hi); WR_STROBE(); WRITE_8(lo); WR_STROBE();
@@ -292,7 +299,9 @@ void DIYables_TFT_Touch_Shield_Base::writeData16(uint16_t data, uint32_t count) 
         WRITE_8(hi); WR_STROBE();
         WRITE_8(lo); WR_STROBE();
       }
+#ifndef DELAY_WR_STOBE
     }
+#endif
     return;
   }
   #endif
@@ -512,7 +521,9 @@ void DIYables_TFT_Touch_Shield_Base::setADCResolution(uint8_t bits) {
 }
 
 void DIYables_TFT_Touch_Shield_Base::readTouchRaw(int &x, int &y, int &z) {
+  PIN_HIGH(CS_PORT, CS_PIN);
   TSPoint tp = _ts.getPoint();
+  PIN_LOW(CS_PORT, CS_PIN);
 
   // DIYables_TouchScreen::getPoint() leaves YP and XM in INPUT (analog) mode,
   // but these pins are shared with the TFT data/control bus and must be

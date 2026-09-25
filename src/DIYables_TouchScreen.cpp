@@ -111,11 +111,14 @@ int DIYables_TouchScreen::readTouchX(void) {
   pinMode(_ym, INPUT);
   digitalWrite(_yp, LOW);
   digitalWrite(_ym, LOW);
+	
+  delayMicroseconds(1);
 
   pinMode(_xp, OUTPUT);
   digitalWrite(_xp, HIGH);
   pinMode(_xm, OUTPUT);
   digitalWrite(_xm, LOW);
+  delayMicroseconds(1);
 
 #ifdef ARDUINO_ARCH_MBED
   resetAnalogPinCache(_yp);
@@ -131,16 +134,20 @@ int DIYables_TouchScreen::readTouchY(void) {
   pinMode(_xm, INPUT);
   digitalWrite(_xp, LOW);
   digitalWrite(_xm, LOW);
+  delayMicroseconds(1);
 
   pinMode(_yp, OUTPUT);
   digitalWrite(_yp, HIGH);
   pinMode(_ym, OUTPUT);
   digitalWrite(_ym, LOW);
+  delayMicroseconds(1);
 
 #ifdef ARDUINO_ARCH_MBED
   resetAnalogPinCache(_xm);
   delayMicroseconds(200);
 #endif
+
+Serial.println(analogRead(_xm));
 
   return (_adc_max - analogRead(_xm));
 }
@@ -152,11 +159,13 @@ uint16_t DIYables_TouchScreen::pressure(void) {
   digitalWrite(_xp, LOW);
   pinMode(_ym, OUTPUT);
   digitalWrite(_ym, HIGH);
+  delayMicroseconds(1);
 
   digitalWrite(_xm, LOW);
   pinMode(_xm, INPUT);
   digitalWrite(_yp, LOW);
   pinMode(_yp, INPUT);
+  delayMicroseconds(1);
 
 #ifdef ARDUINO_ARCH_MBED
   resetAnalogPinCache(_xm);
@@ -195,6 +204,7 @@ TSPoint DIYables_TouchScreen::getPoint(void) {
   pinMode(_xm, OUTPUT);
   digitalWrite(_xp, HIGH);
   digitalWrite(_xm, LOW);
+  delayMicroseconds(1);
 
 #ifdef ARDUINO_ARCH_MBED
   resetAnalogPinCache(_yp);
@@ -228,6 +238,7 @@ TSPoint DIYables_TouchScreen::getPoint(void) {
   pinMode(_ym, OUTPUT);
   digitalWrite(_ym, LOW);
   digitalWrite(_yp, HIGH);
+  delayMicroseconds(1);
 
 #ifdef ARDUINO_ARCH_MBED
   resetAnalogPinCache(_xm);
@@ -260,6 +271,7 @@ TSPoint DIYables_TouchScreen::getPoint(void) {
   digitalWrite(_yp, LOW);
   pinMode(_yp, INPUT);
   digitalWrite(_ym, HIGH);
+  delayMicroseconds(1);
 
 #ifdef ARDUINO_ARCH_MBED
   resetAnalogPinCache(_xm);

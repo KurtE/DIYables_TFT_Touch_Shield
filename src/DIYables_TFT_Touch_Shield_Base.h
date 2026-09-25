@@ -341,15 +341,73 @@
     pinMode(4, OUTPUT); pinMode(5, OUTPUT); \
     pinMode(6, OUTPUT); pinMode(7, OUTPUT); \
 } while(0)
+// PinMode of A4 (reset pin) removed here as the call to this
+// within the touch screen left the display in a reset state.
 #define SET_CONTROL_DIR_OUT() do { \
     pinMode(A0, OUTPUT); pinMode(A1, OUTPUT); \
     pinMode(A2, OUTPUT); pinMode(A3, OUTPUT); \
-    pinMode(A4, OUTPUT); \
 } while(0)
 #define PIN_LOW(port, pin)   (port)->BSRR = (1UL << ((pin) + 16))
 #define PIN_HIGH(port, pin)  (port)->BSRR = (1UL << (pin))
 #define PIN_OUTPUT(port, pin) /* handled by SET_*_DIR_OUT */
 
+#elif defined(ARDUINO_UNO_Q)
+
+//Pin   0     1     2     3     4     5     6     7     8     9
+//=== ===== ===== ===== ===== ===== ===== ===== ===== ===== =====
+//  0 PB_7  PB_6  PB_3  PB_0  PA_12 PA_11 PB_1  PB_2  PB_4  PB_8 
+// 10 PB_9  PB_15 PB_14 PB_13 PA_4  PA_5  PA_6  PA_7  PC_1  PC_0 
+// 20 PB_11 PB_10 PC_2  PC_3  PD_1  PC_6  PD_2  PC_7  PE_2  PC_8 
+// 30 PE_3  PC_9  PE_5  PE_4  PE_6  PI_4  PE_7  PI_6  PE_8  PI_7 
+// 40 PH_14 PD_9  PH_15 PI_5  PA_3  PD_8  PA_0  PA_8  PA_1  PA_10
+// 50 PG_10 PG_11 PG_12 PG_13 PG_14 PG_15 PH_0  PH_1  PH_2  PH_3 
+// 60 PH_4  PH_5  PH_6  PH_7  PH_8  PH_9  PH_10 PF_13 PA_2  PG_3 
+
+
+#define RD_PORT    GPIOA //A0 - 14
+#define RD_PIN     4
+#define WR_PORT    GPIOA  //A1
+#define WR_PIN     5
+#define CD_PORT    GPIOA
+#define CD_PIN     6
+#define CS_PORT    GPIOA
+#define CS_PIN     7
+#define RESET_PORT GPIOC
+#define RESET_PIN  1
+
+#define WRITE_8(val) do { \
+    uint32_t a_set = 0, a_clr = 0; \
+    uint32_t b_set = 0, b_clr = 0; \
+    if ((val) & 0x01) b_set |= (1UL<<4);  else b_clr |= (1UL<<4);  \
+    if ((val) & 0x02) b_set |= (1UL<<8);  else b_clr |= (1UL<<8);  \
+    if ((val) & 0x04) b_set |= (1UL<<3);  else b_clr |= (1UL<<3);  \
+    if ((val) & 0x08) b_set |= (1UL<<0);  else b_clr |= (1UL<<0);  \
+    if ((val) & 0x10) a_set |= (1UL<<12);  else a_clr |= (1UL<<12);  \
+    if ((val) & 0x20) a_set |= (1UL<<11);  else a_clr |= (1UL<<11);  \
+    if ((val) & 0x40) b_set |= (1UL<<1); else b_clr |= (1UL<<1); \
+    if ((val) & 0x80) b_set |= (1UL<<2);  else b_clr |= (1UL<<2);  \
+    GPIOA->BSRR = a_set | (a_clr << 16); \
+    GPIOB->BSRR = b_set | (b_clr << 16); \
+} while(0)
+
+#define SET_DATA_DIR_OUT() do { \
+    pinMode(8, OUTPUT); pinMode(9, OUTPUT); \
+    pinMode(2, OUTPUT); pinMode(3, OUTPUT); \
+    pinMode(4, OUTPUT); pinMode(5, OUTPUT); \
+    pinMode(6, OUTPUT); pinMode(7, OUTPUT); \
+} while(0)
+
+// PinMode of A4 (reset pin) removed here as the call to this
+// within the touch screen left the display in a reset state.
+#define SET_CONTROL_DIR_OUT() do { \
+   pinMode(A0, OUTPUT); pinMode(A1, OUTPUT); \
+   pinMode(A2, OUTPUT); pinMode(A3, OUTPUT); \
+} while(0)
+
+#define PIN_LOW(port, pin)   (port)->BSRR = (1UL << ((pin) + 16))
+#define PIN_HIGH(port, pin)  (port)->BSRR = (1UL << (pin))
+#define PIN_OUTPUT(port, pin) /* handled by SET_*_DIR_OUT */
+#define DELAY_WR_STOBE
 #else
 // Fallback: use the Arduino API on any board without a native fast path.
 #ifndef ARDUINO_API_USED
@@ -387,12 +445,21 @@ static const uint8_t dataPins[] = { D0_PIN, D1_PIN, D2_PIN, D3_PIN, D4_PIN, D5_P
 // and is fully inlined — identical machine code to writing the three
 // operations out by hand.
 #ifndef ARDUINO_API_USED
+#ifdef DELAY_WR_STOBE
+#define WR_STROBE() do { \
+    PIN_LOW(WR_PORT, WR_PIN); \
+    delayMicroseconds(1); \
+    PIN_HIGH(WR_PORT, WR_PIN); \
+    delayMicroseconds(1); \
+} while (0)
+#else
 #define WR_STROBE() do { \
     PIN_LOW(WR_PORT, WR_PIN); \
     asm volatile("nop"); \
     PIN_HIGH(WR_PORT, WR_PIN); \
 } while (0)
 #endif
+#endif    
 
 // ===========================================================================
 // Default touch panel pins (Uno/Mega layout)
